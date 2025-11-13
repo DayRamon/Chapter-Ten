@@ -82,7 +82,7 @@ void option3()
 		cout << "\n\t\t0> return";
 		cout << "\n\t" << string(60, char(205));
 
-		switch (toupper(inputChar("\n\t\tOption: ", static_cast<string>("ABC0"))))
+		switch (toupper(inputChar("\n\t\tOption: ", static_cast<string>("AB0"))))
 		{
 		case '0': return;
 		case 'A': 
@@ -103,5 +103,6 @@ void option3()
 		}
 
 	} while (true);
+
 
 }
