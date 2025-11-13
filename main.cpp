@@ -4,6 +4,7 @@
 // Prof. Quach
 // 11/12/2025
 // Assignement 10
+// In collaboration with Pedro Vargas and Daisy Ramon
 
 #include <iostream> 
 #include "input.h"
@@ -146,8 +147,8 @@ void option2()
         cout << INDENT << string(85, (char)196) << endl;
         cout << INDENT << INDENT << "0 > return\n";
         cout << INDENT << string(85, (char)205) << endl;
-        choice = toupper(inputChar("\t\tOption :", "ABCDEFG0"));
-        switch (choice) {
+        
+        switch (toupper(inputChar("\t\tOption: ", static_cast<string>("ABCDEFG0")))) {
         case 'A':
             nValue = inputInteger("\t\tEnter an integer: ");
             newTree.insert(nValue);
@@ -238,12 +239,6 @@ void option3()
 	cout << "\n\n\tA learning version of twenty questions: one that not only plays the game, but learns new \n\tobjects when it loses.\n\n";
 	
 	binary_tree_node<string>* root = beginning_tree();
-
-	if (root == nullptr)
-	{
-		cout << "Could not load animal tree.\n";
-		return;
-	}
 
 	do 
 	{
