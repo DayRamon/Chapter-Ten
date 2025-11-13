@@ -8,8 +8,17 @@
 #include <iostream> 
 #include "input.h"
 #include "Animal.h"
+#include "BinaryTree.h"
+
+ostream& operator<<(ostream& os, const BinaryTree& obj) 
+{
+	obj.inOrderPrint(os, obj.root);
+	return os;
+}
 
 using namespace std;
+
+void option2();
 void option3();
 
 int main()
@@ -29,7 +38,7 @@ int main()
 		{
 		case 0: exit(1);
 		//case 1: option1(); break;
-			//case 2: option2(); break;
+		case 2: option2(); break;
 		case 3: option3(); break;
 		default: cout << "\n\tERROR: invalud option.\n";
 		}
@@ -40,6 +49,99 @@ int main()
 	} while (true);
 
 	return 0;
+}
+
+const char INDENT = '\t';
+void option2() 
+{
+    char choice = 'A';
+    int nValue = 0;
+    bool running = true;
+    BinaryTree newTree;
+    do 
+    {
+        system("cls");
+        cout << INDENT << "1 > bTree container\n";
+        cout << INDENT << string(85, (char)205) << endl;
+        cout << INDENT << INDENT << "A > Insert a node / leaf\n";
+        cout << INDENT << INDENT << "B > Count of Nodes / leaves\n";
+        cout << INDENT << INDENT << "C > Search a node / leaf\n";
+        cout << INDENT << INDENT << "D > Pre - order traversal\n";
+        cout << INDENT << INDENT << "E > In - order traversal\n";
+        cout << INDENT << INDENT << "F > Post - order traveral\n";
+        cout << INDENT << INDENT << "G > Delete the entire tree\n";
+        cout << INDENT << string(85, (char)196) << endl;
+        cout << INDENT << INDENT << "0 > return\n";
+        cout << INDENT << string(85, (char)205) << endl;
+        choice = toupper(inputChar("\t\tOption :", "ABCDEFG0"));
+        switch (choice) {
+        case 'A':
+            nValue = inputInteger("\t\tEnter an integer: ");
+            newTree.insert(nValue);
+            cout << "\n\n";
+            break;
+        case 'B':
+
+            cout << "\n\n" << INDENT << INDENT << "Count of Nodes: " << newTree.getSize() << " nodes. \n\n";
+
+            break;
+        case 'C':
+            if (newTree.getSize() == 0) {
+                cout << "\n\n\t\t" << "Tree is empty. \n\n";
+            }
+            else {
+                nValue = inputInteger("\t\tEnter an integer: ");
+                if (newTree.search(nValue)) {
+                    cout << "\t\t" << nValue << " is found. \n\n";
+                }
+                else {
+                    cout << "\t\t" << nValue << " is not found. \n\n";
+                }
+            }
+            break;
+        case 'D':
+            if (newTree.getSize() == 0) {
+                cout << "\n\n\t\t" << "Tree is empty. \n\n";
+            }
+            else {
+                cout << "\n\n\t\t" << "Pre-order traversal of bTree with " << newTree.getSize() << " nodes :\n";
+                cout << "\t";
+                newTree.preOrder();
+                cout << "\n\n";
+            }
+            break;
+        case 'E':
+            if (newTree.getSize() == 0) {
+                cout << "\n\n\t\t" << "Tree is empty. \n\n";
+            }
+            else {
+                cout << "\n\n\t\t" << "Inorder traversal of bTree with " << newTree.getSize() << " nodes :\n";
+                cout << "\t" << newTree << "\n\n";
+            }
+            break;
+        case 'F':
+            if (newTree.getSize() == 0) {
+                cout << "\n\n\t\t" << "Tree is empty. \n\n";
+            }
+            else {
+                cout << "\n\n\t\t" << "Post-order traversal of bTree with " << newTree.getSize() << ":\n";
+                cout << "\t";
+                newTree.postOrder();
+                cout << "\n\n";
+            }
+            break;
+        case 'G':
+            newTree.clear();
+
+            cout << "\n\n\t\t" << "bTree has been cleared. \n\n";
+
+            break;
+        case '0':
+            running = false;
+            break;
+        }
+        system("pause");
+    } while (running);
 }
 
 void option3()
@@ -97,12 +199,10 @@ void option3()
 			preorderTraveral(out, root);
 			out.close();
 			cout << "\n\t\tGame saved successfully!\n";
-		}
-		break; 
+		} break; 
 
 		}
 
 	} while (true);
-
 
 }
