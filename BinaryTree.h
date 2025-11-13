@@ -1,16 +1,10 @@
-#include <iostream>
-#include <queue>
-using std::queue;
-using std::ostream;
-
-
-
 #pragma once
 #ifndef BINARYTREE_H
 #define BINARYTREE_H
 
 #include <iostream>
 #include <queue>
+#include <algorithm>
 using std::queue;
 using std::ostream;
 
@@ -33,8 +27,10 @@ private:
     bool recursiveSearch(const Node* current, int value) const {
         if (!current) return false;
         if (current->data == value) return true;
-        return recursiveSearch(current->left, value) ||
-            recursiveSearch(current->right, value);
+        if (value < current->data)
+            return recursiveSearch(current->left, value);
+        else
+            return recursiveSearch(current->right, value);
     }
 
     void inOrderPrint(ostream& os, const Node* cur) const {
@@ -61,18 +57,23 @@ private:
         }
     }
 
+
     Node* findMin(Node* node) const {
-        if (!node) return nullptr;
-        while (node->left) node = node->left;
+        while (node && node->left) node = node->left;
         return node;
     }
 
     Node* deleteRecursive(Node* current, int value) {
         if (!current) return nullptr;
 
-        if (current->data == value) {
+        if (value < current->data)
+            current->left = deleteRecursive(current->left, value);
 
+        else if (value > current->data)
+            current->right = deleteRecursive(current->right, value);
 
+        else {
+      
             if (!current->left && !current->right) {
                 delete current;
                 return nullptr;
@@ -90,15 +91,10 @@ private:
                 return temp;
             }
 
-            Node* successor = findMin(current->right);
-            current->data = successor->data;
-            current->right = deleteRecursive(current->right, successor->data);
+            Node* nextNode = findMin(current->right);
+            current->data = nextNode->data;
+            current->right = deleteRecursive(current->right, nextNode->data);
         }
-        else {
-            current->left = deleteRecursive(current->left, value);
-            current->right = deleteRecursive(current->right, value);
-        }
-
         return current;
     }
 
@@ -108,7 +104,6 @@ private:
         clear(cur->right);
         delete cur;
     }
-
 
     int heightHelper(Node* cur) const {
         if (!cur) return 0;
@@ -121,7 +116,6 @@ private:
         return leafHelper(cur->left) + leafHelper(cur->right);
     }
 
- 
     struct BalanceResult {
         int height;
         bool balanced;
@@ -143,43 +137,24 @@ private:
 public:
     BinaryTree() : root(nullptr), size(0) {}
 
-    ~BinaryTree() {
-        clear(root);
+    ~BinaryTree() { clear(root); }
+
+    Node* insertHelper(Node* cur, int value) {
+        if (!cur) {
+            size++;
+            return new Node(value);
+        }
+
+        if (value < cur->data)
+            cur->left = insertHelper(cur->left, value);
+        else
+            cur->right = insertHelper(cur->right, value);
+
+        return cur;
     }
 
-    // -------------------------------
-    // Insert (Level-order)
-    // -------------------------------
     void insert(int value) {
-        Node* newNode = new Node(value);
-
-        if (!root) {
-            root = newNode;
-            size++;
-            return;
-        }
-
-        queue<Node*> q;
-        q.push(root);
-
-        while (!q.empty()) {
-            Node* cur = q.front();
-            q.pop();
-
-            if (!cur->left) {
-                cur->left = newNode;
-                size++;
-                return;
-            }
-            q.push(cur->left);
-
-            if (!cur->right) {
-                cur->right = newNode;
-                size++;
-                return;
-            }
-            q.push(cur->right);
-        }
+        root = insertHelper(root, value);
     }
 
     void deletion(int value) {
@@ -212,18 +187,9 @@ public:
         std::cout << "\n";
     }
 
-
-    int height() const {
-        return heightHelper(root);
-    }
-
-    int leafCount() const {
-        return leafHelper(root);
-    }
-
-    bool isBalanced() const {
-        return isBalancedHelper(root).balanced;
-    }
+    int height() const { return heightHelper(root); }
+    int leafCount() const { return leafHelper(root); }
+    bool isBalanced() const { return isBalancedHelper(root).balanced; }
     int getSize() const { return size; }
 
     void clear() {
