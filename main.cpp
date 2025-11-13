@@ -18,6 +18,7 @@ ostream& operator<<(ostream& os, const BinaryTree& obj)
 
 using namespace std;
 
+void option1();
 void option2();
 void option3();
 
@@ -37,7 +38,7 @@ int main()
 		switch (inputInteger("\t\t  Option: ", 0, 3))
 		{
 		case 0: exit(1);
-		//case 1: option1(); break;
+		case 1: option1(); break;
 		case 2: option2(); break;
 		case 3: option3(); break;
 		default: cout << "\n\tERROR: invalud option.\n";
@@ -51,6 +52,78 @@ int main()
 	return 0;
 }
 
+void option1()
+{
+    system("cls");
+    cout << "\n\t1> Tree of strings";
+    cout << "\n\t" << string(99, char(205)) << '\n';
+
+    // A: create root
+    cout << "\n\tA> Created root (trunk) with no leaf.\n";
+    binary_tree_node<string>* root = new binary_tree_node<string>("trunk");
+
+    cout << "\n";
+    print_tree(string(16, char(32)), root, false, true, false);
+
+    // B: grow branches
+    cout << "\n\tB> Root (trunk) grows two branches: branch #1 and branch #2.\n";
+    cout << "\tA branch of (branch #1) grows left of the root.\n";
+    cout << "\tA branch of (branch #2) grows right of the root.\n";
+
+    binary_tree_node<string>* branch1 = new binary_tree_node<string>("branch #1");
+    binary_tree_node<string>* branch2 = new binary_tree_node<string>("branch #2");
+    root->setLeft(branch1);
+    root->setRight(branch2);
+
+    cout << "\n";
+    print_tree(string(16, char(32)), root, false, true, false);
+
+    // C: grow leaves
+    cout << "\n\tC> Branches grow leaves.\n";
+    cout << "\n\tLeft branch of (branch #1) grows two leaves: leaf #1 and leaf #2.\n";
+    binary_tree_node<string>* leaf1 = new binary_tree_node<string>("leaf #1");
+    binary_tree_node<string>* leaf2 = new binary_tree_node<string>("leaf #2");
+    branch1->setLeft(leaf1);
+
+    cout << "\n";
+    print_tree(string(16, char(32)), root, false, true, false);
+
+    cout << "\n\tRight branch of (branch #2) grows two leaves: leaf #3 and leaf #4.\n";
+    binary_tree_node<string>* leaf3 = new binary_tree_node<string>("leaf #3");
+    binary_tree_node<string>* leaf4 = new binary_tree_node<string>("leaf #4");
+    branch2->setLeft(leaf3);
+    branch2->setRight(leaf4);
+
+    cout << "\n";
+    print_tree(string(16, char(32)), root, false, true, false);
+
+    // D: left leaf yields apple
+    cout << "\n\tD> Left leaf sprouts and yields a fruit (apple).\n";
+    binary_tree_node<string>* apple = new binary_tree_node<string>("apple");
+    leaf1->setLeft(apple);
+
+    cout << "\n";
+    print_tree(string(16, char(32)), root, false, true, false);
+
+    // E: right leaf yields orange and coconut
+    cout << "\n\tE> Right leaf sprouts and yields two fruits (orange and coconut).\n";
+    binary_tree_node<string>* orange = new binary_tree_node<string>("orange");
+    binary_tree_node<string>* coconut = new binary_tree_node<string>("coconut");
+    leaf3->setLeft(orange);
+    leaf3->setRight(coconut);
+
+    cout << "\n";
+    print_tree(string(16, char(32)), root, false, true, false);
+
+    // F: delete tree
+    cout << "\n\tF> Delete tree.\n";
+    delete_tree(root);
+    root = nullptr;
+
+    cout << "\n\n";
+
+
+}
 const char INDENT = '\t';
 void option2() 
 {
@@ -184,9 +257,14 @@ void option3()
 		cout << "\n\t\t0> return";
 		cout << "\n\t" << string(60, char(205));
 
-		switch (toupper(inputChar("\n\t\tOption: ", static_cast<string>("AB0"))))
-		{
-		case '0': return;
+        switch (toupper(inputChar("\n\t\tOption: ", static_cast<string>("AB0"))))
+        {
+        case '0':
+        {
+            cout << "\n\tThank you for teaching AI a thing or two";
+            return;
+        }
+        
 		case 'A': 
 		{
 			system("cls");
